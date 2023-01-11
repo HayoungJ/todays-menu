@@ -11,6 +11,7 @@ const fontSize = {
 const palette = {
   red: '#dd2b1f',
   gray: '#dedede',
+  white: '#fefefe',
 };
 
 export const theme: DefaultTheme = {

@@ -13,6 +13,7 @@ declare module 'styled-components' {
     palette: {
       red: string;
       gray: string;
+      white: string;
     };
 
     borderRadius: string;
