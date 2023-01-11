@@ -3,13 +3,13 @@ import { lighten, darken } from 'polished';
 
 interface StyledButtonProps {
   color: 'red' | 'gray';
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
   cursor: pointer;
-  padding: 1rem 0;
+  padding: 1rem;
 
   ${({ theme, color, width, height }) => {
     const selected = theme.palette[color];
@@ -22,8 +22,8 @@ const StyledButton = styled.button<StyledButtonProps>`
         background: ${darken(0.1, selected)};
       }
 
-      width: ${width}rem;
-      height: ${height}rem;
+      width: ${width ? `${width}rem` : 'auto'};
+      height: ${height ? `${height}rem` : 'auto'};
 
       border-radius: ${theme.borderRadius};
     `;
@@ -32,10 +32,15 @@ const StyledButton = styled.button<StyledButtonProps>`
 
 interface ButtonProps extends StyledButtonProps {
   label: string;
+  onClick(): any;
 }
 
-function BaseButton({ label, ...rest }: ButtonProps) {
-  return <StyledButton {...rest}>{label}</StyledButton>;
+function BaseButton({ label, onClick, ...rest }: ButtonProps) {
+  return (
+    <StyledButton {...rest} onClick={onClick}>
+      {label}
+    </StyledButton>
+  );
 }
 
 export default BaseButton;
