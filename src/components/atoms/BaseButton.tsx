@@ -20,7 +20,7 @@ const StyledButton = styled.button<StyledButtonProps>`
         background: ${darken(0.1, selected)};
       }
 
-      width: ${width ? `${width}rem` : 'auto'};
+      width: ${width ? `${width}rem` : '100%'};
       height: ${height ? `${height}rem` : 'auto'};
 
       padding: 1rem 1.5rem;
