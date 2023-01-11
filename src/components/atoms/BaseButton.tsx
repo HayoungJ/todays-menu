@@ -5,13 +5,11 @@ interface StyledButtonProps {
   color: 'red' | 'gray';
   width?: number;
   height?: number;
+  textSize?: 'xs' | 'sm' | 'base' | 'md' | 'lg';
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
-  cursor: pointer;
-  padding: 1rem;
-
-  ${({ theme, color, width, height }) => {
+  ${({ theme, color, width, height, textSize }) => {
     const selected = theme.palette[color];
     return css`
       background: ${selected};
@@ -25,7 +23,15 @@ const StyledButton = styled.button<StyledButtonProps>`
       width: ${width ? `${width}rem` : 'auto'};
       height: ${height ? `${height}rem` : 'auto'};
 
+      padding: 1rem 1.5rem;
+
       border-radius: ${theme.borderRadius};
+
+      color: ${theme.palette.white};
+      font-weight: 600;
+      font-size: ${textSize ? `${theme.fontSize[textSize]}` : 'base'};
+
+      cursor: pointer;
     `;
   }}
 `;
