@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import BaseButton from '../atoms/BaseButton';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 interface StyledLoginTemplateProps {
   decorationColor: string;
