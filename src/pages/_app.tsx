@@ -1,13 +1,31 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from '../styles/global-style';
 import { theme } from '../styles/theme';
 
-export default function App({ Component, pageProps }: AppProps) {
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+
+import { UserProvider } from '../contexts/UserContext';
+
+library.add(fas);
+
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+function App({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <QueryClientProvider client={client}>
       <Head>
         <title>오늘 뭐 먹지</title>
         <meta
@@ -18,8 +36,13 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <UserProvider>
+          <Component {...pageProps} />
+        </UserProvider>
       </ThemeProvider>
-    </>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
+
+export default App;
