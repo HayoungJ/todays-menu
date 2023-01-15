@@ -3,12 +3,8 @@ import reset from 'styled-reset';
 
 export const GlobalStyle = createGlobalStyle`
   ${reset}
-  :focus {
-    outline: none;
-    border: none;
-  }
-  ::-webkit-scrollbar {
-    display: none;
+  *{
+    box-sizing: border-box;
   }
   html{
     font-size: 12px;
@@ -27,5 +23,12 @@ export const GlobalStyle = createGlobalStyle`
         cursor: default;
         fill: #f2f3f4;
     }
+  }
+  :focus {
+    outline: none;
+    border: none;
+  }
+  ::-webkit-scrollbar {
+    display: none;
   }
 `;
