@@ -12,6 +12,7 @@ const palette = {
   red: '#dd2b1f',
   gray: '#dedede',
   white: '#fefefe',
+  black: '#363636',
 };
 
 export const theme: DefaultTheme = {
