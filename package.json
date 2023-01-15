@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@next/bundle-analyzer": "^13.1.1",
     "@next/font": "13.1.1",
     "@types/node": "18.11.18",
@@ -22,6 +25,7 @@
     "polished": "^4.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-is": "^18.2.0",
     "react-query": "^3.39.2",
     "styled-components": "^5.3.6",
     "styled-reset": "^4.4.5",
