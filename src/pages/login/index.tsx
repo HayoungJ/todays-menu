@@ -1,22 +1,31 @@
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { useRouter } from 'next/router';
+
 import LoginTemplate from '../../components/templates/LoginTemplate';
 
-import { FirebaseAuthType } from '../../types/firebase';
-import { googleLogin } from '../../apis/firebaseAuth';
+import { authError, firebaseUser } from '../../types/user';
+
+import { googleLogin } from '../../api/auth';
+import { useUser } from '../../contexts/UserContext';
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  const user = useUser();
+
   const handleGoogleLogin = async () => {
     try {
-      const { user } = await googleLogin();
-      saveUserData(user);
+      await googleLogin();
     } catch (error) {
-      const { code, message } = error as unknown as FirebaseAuthType.error;
+      const { code, message } = error as unknown as authError;
       console.error(`Google Login ${code} error: ${message}`);
     }
   };
 
-  const saveUserData = (user: FirebaseAuthType.user) => {
-    console.log(user);
-  };
+  useEffect(() => {
+    if (user) router.push('/');
+  }, [user]);
 
   return (
     <LoginTemplate
