@@ -10,28 +10,29 @@ interface StyledButtonProps {
 
 const StyledButton = styled.button<StyledButtonProps>`
   ${({ theme, color, width, height, textSize }) => {
-    const selected = theme.palette[color];
+    const { palette, fontSize, borderRadius } = theme;
     return css`
-      background: ${selected};
-      &:hover {
-        background: ${lighten(0.1, selected)};
-      }
-      &:active {
-        background: ${darken(0.1, selected)};
-      }
+      background: ${palette[color]};
 
       width: ${width ? `${width}rem` : '100%'};
       height: ${height ? `${height}rem` : 'auto'};
 
       padding: 1rem 1.5rem;
 
-      border-radius: ${theme.borderRadius};
+      border-radius: ${borderRadius};
 
-      color: ${theme.palette.white};
+      color: ${palette.white};
       font-weight: 600;
-      font-size: ${textSize ? `${theme.fontSize[textSize]}` : 'base'};
+      font-size: ${textSize ? `${fontSize[textSize]}` : 'base'};
 
       cursor: pointer;
+
+      &:hover {
+        background: ${lighten(0.1, palette[color])};
+      }
+      &:active {
+        background: ${darken(0.1, palette[color])};
+      }
     `;
   }}
 `;
