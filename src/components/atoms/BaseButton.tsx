@@ -1,14 +1,14 @@
 import styled, { css } from 'styled-components';
 import { lighten, darken } from 'polished';
 
-interface StyledButtonProps {
+interface IStyledButton {
   color: 'red' | 'gray';
   width?: number;
   height?: number;
   textSize?: 'xs' | 'sm' | 'base' | 'md' | 'lg';
 }
 
-const StyledButton = styled.button<StyledButtonProps>`
+const StyledButton = styled.button<IStyledButton>`
   ${({ theme, color, width, height, textSize }) => {
     const { palette, fontSize, borderRadius } = theme;
     return css`
@@ -17,7 +17,7 @@ const StyledButton = styled.button<StyledButtonProps>`
       width: ${width ? `${width}rem` : '100%'};
       height: ${height ? `${height}rem` : 'auto'};
 
-      padding: 1rem 1.5rem;
+      padding: 0.7rem 1.3rem;
 
       border-radius: ${borderRadius};
 
@@ -37,14 +37,14 @@ const StyledButton = styled.button<StyledButtonProps>`
   }}
 `;
 
-interface ButtonProps extends StyledButtonProps {
+interface IButton extends IStyledButton {
   label: string;
-  onClick(): any;
+  onClick: () => any;
 }
 
-function BaseButton({ label, onClick, ...rest }: ButtonProps) {
+function BaseButton({ label, onClick, ...props }: IButton) {
   return (
-    <StyledButton {...rest} onClick={onClick}>
+    <StyledButton {...props} onClick={onClick}>
       {label}
     </StyledButton>
   );
