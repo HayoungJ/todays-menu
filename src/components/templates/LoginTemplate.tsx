@@ -3,7 +3,7 @@ import BaseButton from '../atoms/BaseButton';
 
 import styled from 'styled-components';
 
-interface StyledLoginTemplateProps {
+interface IStyledLoginTemplate {
   decorationColor: string;
 }
 
@@ -25,7 +25,7 @@ const StyledMain = styled.main`
   padding-bottom: 50px;
 `;
 
-const Decoration = styled.div<StyledLoginTemplateProps>`
+const Decoration = styled.div<IStyledLoginTemplate>`
   position: relative;
 
   &::after {
@@ -56,7 +56,7 @@ const LoginButton = styled(BaseButton)`
   margin-top: 20px;
 `;
 
-interface LoginTemplateProps extends StyledLoginTemplateProps {
+interface ILoginTemplate extends IStyledLoginTemplate {
   logoURL: string;
   buttonLabel: string;
   loginEvent(): any;
@@ -67,7 +67,7 @@ function LoginTemplate({
   buttonLabel,
   decorationColor,
   loginEvent,
-}: LoginTemplateProps) {
+}: ILoginTemplate) {
   return (
     <StyledTemplate>
       <StyledMain>
