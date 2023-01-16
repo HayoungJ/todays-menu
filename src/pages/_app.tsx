@@ -8,12 +8,7 @@ import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from '../styles/global-style';
 import { theme } from '../styles/theme';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-
 import { UserProvider } from '../contexts/UserContext';
-
-library.add(fas);
 
 const client = new QueryClient({
   defaultOptions: {
