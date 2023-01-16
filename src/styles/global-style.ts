@@ -4,10 +4,11 @@ import reset from 'styled-reset';
 export const GlobalStyle = createGlobalStyle`
   ${reset}
   *{
+    font-size: 16px;
     box-sizing: border-box;
   }
   html{
-    font-size: 12px;
+    font-size: 16px;
     -webkit-text-size-adjust: none;
     font-family: -apple-system,BlinkMacSystemFont,helvetica,Apple SD Gothic Neo,sans-serif;       
     font-display: fallback;
@@ -26,7 +27,6 @@ export const GlobalStyle = createGlobalStyle`
   }
   :focus {
     outline: none;
-    border: none;
   }
   ::-webkit-scrollbar {
     display: none;
