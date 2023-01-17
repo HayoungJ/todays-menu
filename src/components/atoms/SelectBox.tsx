@@ -14,6 +14,8 @@ interface IStyledSelectBox {
 const StyledSelectBox = styled.div<Omit<IStyledSelectBox, 'isOpen'>>`
   ${({ width, height }) => {
     return css`
+      position: relative;
+
       width: ${width ? `${width}rem` : '100%'};
       height: ${height ? `${height}rem` : 'auto'};
     `;
@@ -78,6 +80,8 @@ const StyledOptions = styled.ul<Pick<IStyledSelectBox, 'isOpen'>>`
   ${({ theme, isOpen }) => {
     const { palette, borderRadius } = theme;
     return css`
+      position: absolute;
+
       display: ${isOpen ? 'block' : 'none'};
 
       width: 100%;
@@ -106,13 +110,13 @@ const StyledOption = styled.li<Pick<IStyledSelectBox, 'height'>>`
 
       cursor: pointer;
 
+      &.on {
+        background-color: ${lighten(0.4, palette.red)};
+      }
+
       &:hover {
         color: ${palette.white};
         background-color: ${lighten(0.2, palette.red)};
-      }
-
-      &.on {
-        background-color: ${lighten(0.4, palette.red)};
       }
     `;
   }}
