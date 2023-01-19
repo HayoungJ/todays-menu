@@ -12,6 +12,7 @@ declare module 'styled-components' {
 
     palette: {
       red: string;
+      beige: string;
       gray: string;
       white: string;
       black: string;

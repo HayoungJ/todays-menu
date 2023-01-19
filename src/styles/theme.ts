@@ -13,6 +13,7 @@ const palette = {
   gray: '#dedede',
   white: '#fefefe',
   black: '#363636',
+  beige: '#e8d1ac',
 };
 
 export const theme: DefaultTheme = {
