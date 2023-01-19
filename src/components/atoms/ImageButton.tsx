@@ -16,6 +16,11 @@ const StyledImageButton = styled.button<IStyledImageButton>`
       overflow: hidden;
 
       cursor: pointer;
+
+      img {
+        width: ${width ? `${width}rem` : '100%'};
+        height: ${height ? `${height}rem` : width ? `${width}rem` : 'auto'};
+      }
     `;
   }}
 `;
