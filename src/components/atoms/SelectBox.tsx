@@ -92,6 +92,8 @@ const StyledOptions = styled.ul<Pick<IStyledSelectBox, 'isOpen'>>`
 
       border: 1px solid ${palette.black};
       border-radius: ${borderRadius};
+
+      background-color: ${palette.white};
     `;
   }}
 `;
@@ -104,7 +106,7 @@ const StyledOption = styled.li<Pick<IStyledSelectBox, 'height'>>`
       height: ${height ? `${height}rem` : 'auto'};
 
       padding: 0.7rem 0.8rem;
-      margin: 0.5rem 0;
+      margin: 0.25rem 0 0.5rem;
 
       border-radius: ${borderRadius};
 
@@ -117,6 +119,10 @@ const StyledOption = styled.li<Pick<IStyledSelectBox, 'height'>>`
       &:hover {
         color: ${palette.white};
         background-color: ${lighten(0.2, palette.red)};
+      }
+
+      &:last-child {
+        margin-bottom: 0.25rem;
       }
     `;
   }}
