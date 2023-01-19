@@ -3,10 +3,6 @@ import BaseButton from '../atoms/BaseButton';
 
 import styled from 'styled-components';
 
-interface IStyledLoginTemplate {
-  decorationColor: string;
-}
-
 const StyledTemplate = styled.div`
   display: flex;
 
@@ -17,28 +13,24 @@ const StyledTemplate = styled.div`
 const StyledMain = styled.main`
   display: flex;
   flex-flow: column nowrap;
+  align-items: center;
 
   width: 300px;
   height: auto;
 
   margin: auto;
   padding-bottom: 50px;
-`;
-
-const Decoration = styled.div<IStyledLoginTemplate>`
   position: relative;
 
   &::after {
     content: '';
     display: block;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -5px;
-    margin-left: -5px;
-    width: 10px;
-    height: 10px;
-    background-color: ${(props) => props.decorationColor};
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    background-color: ${(props) => props.theme.palette.beige};
     border-radius: 50%;
     transform: scale(1);
     transition: transform 330ms ease-in-out;
@@ -47,7 +39,7 @@ const Decoration = styled.div<IStyledLoginTemplate>`
 
   &:hover {
     &::after {
-      transform: scale(100);
+      transform: scale(4);
     }
   }
 `;
@@ -56,30 +48,24 @@ const LoginButton = styled(BaseButton)`
   margin-top: 20px;
 `;
 
-interface ILoginTemplate extends IStyledLoginTemplate {
+interface ILoginTemplate {
   logoURL: string;
   buttonLabel: string;
   loginEvent(): any;
 }
 
-function LoginTemplate({
-  logoURL,
-  buttonLabel,
-  decorationColor,
-  loginEvent,
-}: ILoginTemplate) {
+function LoginTemplate({ logoURL, buttonLabel, loginEvent }: ILoginTemplate) {
   return (
     <StyledTemplate>
       <StyledMain>
-        <Decoration decorationColor={decorationColor}>
-          <Image src={logoURL} alt="logo" width={300} height={300} />
-          <LoginButton
-            label={buttonLabel}
-            color="red"
-            textSize="lg"
-            onClick={loginEvent}
-          />
-        </Decoration>
+        <Image src={logoURL} alt="logo" width={300} height={300} />
+        <LoginButton
+          label={buttonLabel}
+          width={15}
+          color="red"
+          textSize="md"
+          onClick={loginEvent}
+        />
       </StyledMain>
     </StyledTemplate>
   );
