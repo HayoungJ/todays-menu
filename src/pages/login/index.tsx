@@ -1,37 +1,35 @@
-import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import LoginTemplate from '../../components/templates/LoginTemplate';
 
-import { authError, firebaseUser } from '../../types/user';
+import { AuthError as IAuthError } from 'firebase/auth';
 
 import { googleLogin } from '../../api/auth';
-import { useUser } from '../../contexts/UserContext';
+import { getCookie } from '../../utils/cookie';
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const user = useUser();
+  const token = getCookie('token');
 
   const handleGoogleLogin = async () => {
     try {
       await googleLogin();
     } catch (error) {
-      const { code, message } = error as unknown as authError;
+      const { code, message } = error as unknown as IAuthError;
       console.error(`Google Login ${code} error: ${message}`);
     }
   };
 
   useEffect(() => {
-    if (user) router.push('/');
-  }, [user]);
+    if (token) router.push('/');
+  }, []);
 
   return (
     <LoginTemplate
       logoURL="/assets/images/logo.png"
       buttonLabel="Google Login"
-      decorationColor="#e8d1ac"
       loginEvent={handleGoogleLogin}
     />
   );
