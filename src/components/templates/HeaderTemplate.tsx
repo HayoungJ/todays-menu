@@ -38,9 +38,10 @@ function HeaderTemplate({
   locationOptions,
   userMenus,
   handleLocationSelect,
+  ...props
 }: IHeaderTemplate) {
   return (
-    <StyledHeader>
+    <StyledHeader {...props}>
       <Image src={logoURL} alt="logo" width={160} height={80} />
       <LocationSelectBox
         width={10}

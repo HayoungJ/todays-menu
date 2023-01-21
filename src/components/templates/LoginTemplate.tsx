@@ -54,9 +54,14 @@ interface ILoginTemplate {
   loginEvent(): any;
 }
 
-function LoginTemplate({ logoURL, buttonLabel, loginEvent }: ILoginTemplate) {
+function LoginTemplate({
+  logoURL,
+  buttonLabel,
+  loginEvent,
+  ...props
+}: ILoginTemplate) {
   return (
-    <StyledTemplate>
+    <StyledTemplate {...props}>
       <StyledMain>
         <Image src={logoURL} alt="logo" width={300} height={300} />
         <LoginButton
