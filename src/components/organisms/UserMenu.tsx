@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import ImageButton from '../atoms/ImageButton';
 
 import styled, { css } from 'styled-components';
@@ -79,7 +79,7 @@ interface IUserMenu {
   userMenus: IMenu[];
 }
 
-function UserMenu({ profileURL, userMenus }: IUserMenu) {
+function UserMenu({ profileURL, userMenus, ...props }: IUserMenu) {
   const [isOpen, setIsOpen] = useState(false);
 
   const onProfileClick = () => {
@@ -87,19 +87,20 @@ function UserMenu({ profileURL, userMenus }: IUserMenu) {
   };
 
   return (
-    <StyledProfile>
+    <StyledProfile {...props}>
       <ImageButton
         imageURL={profileURL}
         action="open profile menu"
         width={4}
+        shape="round"
         onClick={onProfileClick}
       />
       <StyledMenus isOpen={isOpen}>
         {userMenus.map((menu, index) => (
-          <>
+          <Fragment key={index}>
             <StyledMenu onClick={menu.onClick}>{menu.label}</StyledMenu>
             {index !== userMenus.length - 1 && <Decoration />}
-          </>
+          </Fragment>
         ))}
       </StyledMenus>
     </StyledProfile>
