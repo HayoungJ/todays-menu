@@ -3,15 +3,16 @@ import styled, { css } from 'styled-components';
 interface IStyledImageButton {
   width?: number;
   height?: number;
+  shape: 'round' | 'square';
 }
 
 const StyledImageButton = styled.button<IStyledImageButton>`
-  ${({ width, height }) => {
+  ${({ width, height, shape }) => {
     return css`
       width: ${width ? `${width}rem` : '100%'};
       height: ${height ? `${height}rem` : width ? `${width}rem` : 'auto'};
 
-      border-radius: 50%;
+      border-radius: ${shape === 'round' ? '50%' : '0'};
 
       overflow: hidden;
 
