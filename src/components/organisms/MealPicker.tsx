@@ -1,8 +1,9 @@
+import { useState, useEffect } from 'react';
 import ImageButton from '../atoms/ImageButton';
 
 import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
-import { useState } from 'react';
+import Image from 'next/image';
 
 interface IStyledMenu {
   index: number;
@@ -53,7 +54,7 @@ const MenuContainer = styled.ul<IStyledMenu>`
       flex-flow: column nowrap;
       width: 100%;
       transform: translateY(calc((-4rem + 6px) * ${index}));
-      ${animation && 'transition: transform 1s ease-in-out'};
+      ${animation && 'transition: transform 2s ease-in-out'};
 
       li {
         display: flex;
@@ -71,13 +72,13 @@ const MenuContainer = styled.ul<IStyledMenu>`
       }
 
       img {
-        margin-top: -2px;
+        margin: -2px 5px 0;
       }
     `;
   }}
 `;
 
-const PickerButton = styled(ImageButton)`
+const PickButton = styled(ImageButton)`
   transition: transform 30ms ease-in-out;
 
   &:hover {
@@ -85,71 +86,88 @@ const PickerButton = styled(ImageButton)`
   }
 `;
 
-function MenuPicker({ ...props }) {
-  const [menuIndex, setMenuIndex] = useState(0);
-  const [isPicked, setIsPicked] = useState(false);
+const ResetButton = styled(ImageButton)`
+  &:hover {
+    animation: rotate 700ms ease-in-out;
 
-  const testList = [
-    {
-      type: 'text',
-      label: 'test1',
-    },
-    {
-      type: 'text',
-      label: 'test2',
-    },
-    {
-      type: 'text',
-      label: 'test3',
-    },
-    {
-      type: 'text',
-      label: 'test4',
-    },
-    {
-      type: 'text',
-      label: 'test5',
-    },
-    {
-      type: 'image',
-      label: 'https://via.placeholder.com/36',
-    },
-  ];
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+  }
+`;
+
+interface IMealPlaceholder {
+  type: 'image';
+  image: string;
+}
+
+interface IMeal {
+  type: 'text';
+  text: string;
+}
+
+function MealPicker({ ...props }) {
+  const [mealIndex, setMealIndex] = useState(0);
+  const [isPicked, setIsPicked] = useState(false);
+  const [meals, setMeals] = useState<(IMealPlaceholder | IMeal)[]>([]);
 
   const handlePick = () => {
-    setMenuIndex(testList.length - 1);
-    setTimeout(() => setIsPicked(true), 1000);
+    setMealIndex(meals.length - 1);
+    setTimeout(() => setIsPicked(true), 2000);
   };
 
   const handleReset = () => {
-    setMenuIndex(0);
-    setIsPicked(false);
+    setMealIndex(0);
+    setTimeout(() => setIsPicked(false), 10);
   };
+
+  useEffect(() => {
+    const meals = [];
+    for (let i = 1; i < 10; i++) {
+      const placeholder: IMealPlaceholder = {
+        type: 'image',
+        image: `/assets/images/foods/food${i}.png`,
+      };
+      meals.push(placeholder);
+    }
+    setMeals(meals);
+  }, []);
 
   return (
     <StyledPicker {...props}>
       <StyledMenu>
-        <MenuContainer index={menuIndex} animation={!isPicked}>
-          {testList.map((list, index) => (
+        <MenuContainer index={mealIndex} animation={!isPicked}>
+          {meals.map((meal, index) => (
             <li key={index}>
-              {list.type === 'text' && <span>{list.label}</span>}
-              {list.type === 'image' && <img src={list.label} />}
+              {meal.type === 'text' && <span>{meal.text}</span>}
+              {meal.type === 'image' && (
+                <>
+                  <Image src={meal.image} alt="" width={30} height={30} />
+                  <Image src={meal.image} alt="" width={30} height={30} />
+                  <Image src={meal.image} alt="" width={30} height={30} />
+                </>
+              )}
             </li>
           ))}
         </MenuContainer>
       </StyledMenu>
       {isPicked ? (
-        <PickerButton
+        <ResetButton
           imageURL="/assets/images/reset.png"
-          action="reset menu"
+          action="reset meal"
           width={4}
           shape="square"
           onClick={handleReset}
         />
       ) : (
-        <PickerButton
+        <PickButton
           imageURL="/assets/images/roll.png"
-          action="pick menu"
+          action="pick meal"
           width={4}
           shape="square"
           onClick={handlePick}
@@ -159,4 +177,4 @@ function MenuPicker({ ...props }) {
   );
 }
 
-export default MenuPicker;
+export default MealPicker;
