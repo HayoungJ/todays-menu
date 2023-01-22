@@ -2,10 +2,11 @@ import ImageButton from '../atoms/ImageButton';
 
 import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface IStyledMenu {
   index: number;
+  animation: boolean;
 }
 
 const StyledPicker = styled.article`
@@ -44,7 +45,7 @@ const StyledMenu = styled.div`
 `;
 
 const MenuContainer = styled.ul<IStyledMenu>`
-  ${({ index }) => {
+  ${({ index, animation }) => {
     return css`
       position: absolute;
       top: 0;
@@ -52,7 +53,7 @@ const MenuContainer = styled.ul<IStyledMenu>`
       flex-flow: column nowrap;
       width: 100%;
       transform: translateY(calc((-4rem + 6px) * ${index}));
-      transition: transform 1s ease-in-out;
+      ${animation && 'transition: transform 1s ease-in-out'};
 
       li {
         display: flex;
@@ -76,7 +77,7 @@ const MenuContainer = styled.ul<IStyledMenu>`
   }}
 `;
 
-const PickButton = styled(ImageButton)`
+const PickerButton = styled(ImageButton)`
   transition: transform 30ms ease-in-out;
 
   &:hover {
@@ -86,7 +87,7 @@ const PickButton = styled(ImageButton)`
 
 function MenuPicker({ ...props }) {
   const [menuIndex, setMenuIndex] = useState(0);
-  const [updateIndex, setUpdateIndex] = useState(false);
+  const [isPicked, setIsPicked] = useState(false);
 
   const testList = [
     {
@@ -116,20 +117,19 @@ function MenuPicker({ ...props }) {
   ];
 
   const handlePick = () => {
-    setMenuIndex(0);
-    setUpdateIndex(true);
+    setMenuIndex(testList.length - 1);
+    setTimeout(() => setIsPicked(true), 1000);
   };
 
-  useEffect(() => {
-    if (!updateIndex) return;
-    setMenuIndex(testList.length - 1);
-    setUpdateIndex(false);
-  }, [updateIndex]);
+  const handleReset = () => {
+    setMenuIndex(0);
+    setIsPicked(false);
+  };
 
   return (
     <StyledPicker {...props}>
       <StyledMenu>
-        <MenuContainer index={menuIndex}>
+        <MenuContainer index={menuIndex} animation={!isPicked}>
           {testList.map((list, index) => (
             <li key={index}>
               {list.type === 'text' && <span>{list.label}</span>}
@@ -138,13 +138,23 @@ function MenuPicker({ ...props }) {
           ))}
         </MenuContainer>
       </StyledMenu>
-      <PickButton
-        imageURL="/assets/images/roll.png"
-        action="pick menu"
-        width={4}
-        shape="square"
-        onClick={handlePick}
-      />
+      {isPicked ? (
+        <PickerButton
+          imageURL="/assets/images/reset.png"
+          action="reset menu"
+          width={4}
+          shape="square"
+          onClick={handleReset}
+        />
+      ) : (
+        <PickerButton
+          imageURL="/assets/images/roll.png"
+          action="pick menu"
+          width={4}
+          shape="square"
+          onClick={handlePick}
+        />
+      )}
     </StyledPicker>
   );
 }
