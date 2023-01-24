@@ -1,4 +1,6 @@
 import styled, { css } from 'styled-components';
+import { StyledIcon } from '@styled-icons/styled-icon';
+import { ReactElement, useEffect } from 'react';
 
 interface IStyledImageButton {
   width?: number;
@@ -27,15 +29,28 @@ const StyledImageButton = styled.button<IStyledImageButton>`
 `;
 
 interface IImageButton extends IStyledImageButton {
-  imageURL: string;
+  imageURL?: string;
+  iconElement?: ReactElement;
   action: string;
   onClick: () => any;
 }
 
-function ImageButton({ imageURL, action, onClick, ...props }: IImageButton) {
+function ImageButton({
+  imageURL,
+  iconElement,
+  action,
+  onClick,
+  ...props
+}: IImageButton) {
+  useEffect(() => {
+    if (imageURL || iconElement) return;
+    throw new Error(`One of 'imageURL' or 'iconElement' must be provided`);
+  }, []);
+
   return (
     <StyledImageButton {...props} onClick={onClick}>
-      <img src={imageURL} alt={action} />
+      {imageURL && <img src={imageURL} alt={action} />}
+      {iconElement}
     </StyledImageButton>
   );
 }
