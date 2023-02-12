@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { StyledIcon } from '@styled-icons/styled-icon';
 import { ReactElement, useEffect } from 'react';
 
 interface IStyledImageButton {
