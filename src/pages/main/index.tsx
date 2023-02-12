@@ -1,10 +1,27 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { googleLogout } from '../../api/auth';
 import HeaderTemplate from '../../components/templates/HeaderTemplate';
+import PickerTemplate from '../../components/templates/PickerTemplate';
 
+import { googleLogout } from '../../api/auth';
 import { useUser } from '../../contexts/UserContext';
 import { deleteCookie, getCookie } from '../../utils/cookie';
+
+import styled from 'styled-components';
+
+const StyledMain = styled.main`
+  display: flex;
+  flex-flow: column nowrap;
+
+  width: 100vw;
+  height: 100vh;
+`;
+
+const StyledPicker = styled(PickerTemplate)`
+  flex: 1;
+
+  margin: 1rem auto 2.5rem;
+`;
 
 function MainPage() {
   const router = useRouter();
@@ -40,14 +57,19 @@ function MainPage() {
   }, []);
 
   return (
-    <HeaderTemplate
-      logoURL="/assets/images/text_logo.png"
-      profileURL={user?.photoURL ?? 'https://via.placeholder.com/80'}
-      location={location}
-      locationOptions={locationOptions}
-      userMenus={userMenus}
-      handleLocationSelect={(option, index) => onLocationSelect(option, index)}
-    />
+    <StyledMain>
+      <HeaderTemplate
+        logoURL="/assets/images/text_logo.png"
+        profileURL={user?.photoURL ?? 'https://via.placeholder.com/80'}
+        location={location}
+        locationOptions={locationOptions}
+        userMenus={userMenus}
+        handleLocationSelect={(option, index) =>
+          onLocationSelect(option, index)
+        }
+      />
+      <StyledPicker />
+    </StyledMain>
   );
 }
 
