@@ -15,6 +15,8 @@ const StyledHeader = styled.header`
   height: 6rem;
 
   padding: 0 1.5rem;
+
+  z-index: 10;
 `;
 
 const LocationSelectBox = styled(SelectBox)`
