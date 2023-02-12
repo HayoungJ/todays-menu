@@ -11,8 +11,8 @@ interface IStyledMenus {
 }
 
 const StyledProfile = styled.div`
-  width: 4rem;
-  height: 4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   position: relative;
 `;
 
@@ -91,7 +91,7 @@ function UserMenu({ profileURL, userMenus, ...props }: IUserMenu) {
       <ImageButton
         imageURL={profileURL}
         action="open profile menu"
-        width={4}
+        width={3.5}
         shape="round"
         onClick={onProfileClick}
       />
