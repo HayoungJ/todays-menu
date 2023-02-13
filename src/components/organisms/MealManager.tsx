@@ -4,7 +4,11 @@ import ImageButton from '../atoms/ImageButton';
 import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
 
-import { ArrowBarLeft } from '@styled-icons/bootstrap';
+import {
+  ArrowBarLeft,
+  Trash3Fill,
+  PencilSquare,
+} from '@styled-icons/bootstrap';
 
 const StyledManager = styled.aside<{ isOpen: boolean }>`
   ${({ theme, isOpen }) => {
@@ -36,13 +40,9 @@ const StyledManager = styled.aside<{ isOpen: boolean }>`
 `;
 
 const ManagerButton = styled(ImageButton)`
-  ${({ theme }) => {
-    return css`
-      padding: 1rem;
+  padding: 1rem;
 
-      box-sizing: content-box;
-    `;
-  }};
+  box-sizing: content-box;
 `;
 
 const CustomIcon = ({ isOpen, ...props }: { isOpen: boolean }) => (
@@ -61,11 +61,138 @@ const StyledIcon = styled(CustomIcon)<{ isOpen: boolean }>`
 `;
 
 const ManagerContainer = styled.section`
+  flex: 1;
+  height: 100%;
+`;
+
+const RestaurantsWrap = styled.ul`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  padding: 3rem 4rem 1rem 2rem;
+`;
+
+const RestaurantCard = styled.li`
   ${({ theme }) => {
     const { palette } = theme;
     return css`
-      flex: 1;
-      height: 100%;
+      display: flex;
+      flex-flow: column nowrap;
+
+      width: 30%;
+
+      margin-bottom: 2rem;
+      padding: 1rem 1.5rem;
+
+      border: 1px solid ${palette.red};
+      border-radius: 4px;
+
+      background-color: ${palette.white};
+
+      .title,
+      .food,
+      .distance {
+        line-height: 2rem;
+      }
+
+      strong {
+        font-weight: 600;
+      }
+
+      .title {
+        display: flex;
+        flex-flow: row nowrap;
+
+        strong {
+          margin-right: 1rem;
+        }
+
+        span {
+          flex: 1;
+        }
+      }
+
+      .foods {
+        margin: 0.7rem 0;
+        padding-left: 1rem;
+
+        border-left: 1px solid ${palette.gray};
+
+        .food {
+          display: flex;
+          flex-flow: row nowrap;
+
+          strong {
+            display: inline-block;
+
+            flex: 1 1 20rem;
+
+            text-align: left;
+          }
+
+          span {
+            display: inline-block;
+
+            flex: 0 0 4.5rem;
+
+            margin-left: 1rem;
+
+            text-align: right;
+          }
+        }
+      }
+
+      .distance {
+        margin-top: auto;
+
+        strong {
+          margin-right: 0.1rem;
+
+          color: ${palette.red};
+        }
+      }
+
+      .text-limit {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    `;
+  }};
+`;
+
+const CardButtons = styled.div`
+  margin-left: auto;
+
+  button {
+    margin-left: 1rem;
+  }
+`;
+
+const DeleteIcon = styled(Trash3Fill)`
+  ${({ theme }) => {
+    const { palette } = theme;
+    return css`
+      color: ${palette.gray};
+
+      &:hover {
+        color: ${palette.red};
+      }
+    `;
+  }}
+`;
+
+const EditIcon = styled(PencilSquare)`
+  ${({ theme }) => {
+    const { palette } = theme;
+    return css`
+      color: ${palette.black};
+
+      &:hover {
+        color: ${palette.red};
+      }
     `;
   }}
 `;
@@ -82,7 +209,58 @@ function MealManager({ ...props }) {
         shape="square"
         onClick={() => setIsOpen(!isOpen)}
       />
-      <ManagerContainer></ManagerContainer>
+      <ManagerContainer>
+        <RestaurantsWrap>
+          <RestaurantCard>
+            <h5 className="title">
+              <strong>양식</strong>
+              <span className="text-limit">
+                파스타어쩌구파스타어쩌구파스타어쩌구파스타어쩌구파스타어쩌구파스타어쩌구파스타어쩌구파스타어쩌구
+              </span>
+            </h5>
+            <ul className="foods">
+              <li className="food">
+                <strong className="text-limit">
+                  알리오 올리오알리오 올리오알리오 올리오알리오 올리오알리오
+                  올리오알리오 올리오알리오 올리오
+                </strong>
+                <span>18000원</span>
+              </li>
+              <li className="food">
+                <strong className="text-limit">로제 파스타</strong>
+                <span>8000원</span>
+              </li>
+              <li className="food">
+                <strong className="text-limit">알리오 올리오</strong>
+                <span>8000원</span>
+              </li>
+              <li className="food">
+                <strong className="text-limit">알리오 올리오</strong>
+                <span>8000원</span>
+              </li>
+            </ul>
+            <p className="distance">
+              걸어서 <strong>5</strong>분 거리
+            </p>
+            <CardButtons>
+              <ImageButton
+                iconElement={<DeleteIcon />}
+                action="delete"
+                width={1.3}
+                shape="square"
+                onClick={() => {}}
+              />
+              <ImageButton
+                iconElement={<EditIcon />}
+                action="edit"
+                width={1.3}
+                shape="square"
+                onClick={() => {}}
+              />
+            </CardButtons>
+          </RestaurantCard>
+        </RestaurantsWrap>
+      </ManagerContainer>
     </StyledManager>
   );
 }
