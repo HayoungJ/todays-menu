@@ -5,6 +5,8 @@ import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
 import Image from 'next/image';
 
+import { ArrowCounterclockwise } from '@styled-icons/bootstrap';
+
 interface IStyledMenu {
   index: number;
   animation: boolean;
@@ -86,6 +88,18 @@ const PickButton = styled(ImageButton)`
   }
 `;
 
+const ResetIcon = styled(ArrowCounterclockwise)`
+  ${({ theme }) => {
+    const { palette } = theme;
+    return css`
+      width: 3.5rem;
+      height: 3.5rem;
+
+      color: ${palette.red};
+    `;
+  }}
+`;
+
 const ResetButton = styled(ImageButton)`
   &:hover {
     animation: rotate 700ms ease-in-out;
@@ -158,7 +172,7 @@ function MealPicker({ ...props }) {
       </StyledMenu>
       {isPicked ? (
         <ResetButton
-          imageURL="/assets/images/reset.png"
+          iconElement={<ResetIcon />}
           action="reset meal"
           width={4}
           shape="square"

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
 
-import { ChevronDown } from '@styled-icons/boxicons-regular';
+import { ChevronRight } from '@styled-icons/bootstrap';
 
 interface IStyledSelectBox {
   isOpen: boolean;
@@ -59,18 +59,20 @@ const StyledLabel = styled.button<Pick<IStyledSelectBox, 'isOpen'>>`
 `;
 
 const CustomIcon = ({ isOpen, ...props }: { isOpen: boolean }) => (
-  <ChevronDown {...props} />
+  <ChevronRight {...props} />
 );
 const StyledIcon = styled(CustomIcon)<Pick<IStyledSelectBox, 'isOpen'>>`
   ${({ theme, isOpen }) => {
-    const { fontSize } = theme;
+    const { palette, fontSize } = theme;
     return css`
-      width: ${fontSize.lg};
+      width: ${fontSize.base};
       height: ${fontSize.lg};
+
+      color: ${palette.black};
 
       margin-right: -0.2rem;
 
-      transform: ${isOpen ? 'rotate(-180deg)' : 'rotate(0)'};
+      transform: ${isOpen ? 'rotate(-90deg)' : 'rotate(90deg)'};
       transition: transform 330ms ease-in-out;
     `;
   }}
@@ -82,7 +84,8 @@ const StyledOptions = styled.ul<Pick<IStyledSelectBox, 'isOpen'>>`
     return css`
       position: absolute;
 
-      display: ${isOpen ? 'block' : 'none'};
+      opacity: ${isOpen ? 1 : 0};
+      transition: opacity 330ms ease-in-out;
 
       width: 100%;
       height: auto;
