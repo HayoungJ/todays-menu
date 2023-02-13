@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import { theme } from './theme';
 
 export const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -9,6 +10,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   html{
     font-size: 16px;
+    color: ${theme.palette.black};
     -webkit-text-size-adjust: none;
     font-family: -apple-system,BlinkMacSystemFont,helvetica,Apple SD Gothic Neo,sans-serif;       
     font-display: fallback;
@@ -16,6 +18,7 @@ export const GlobalStyle = createGlobalStyle`
     scrollbar-width: none;
   }
   button {
+    color: ${theme.palette.black};
     background: none;
     padding: 0;
     border: none;
