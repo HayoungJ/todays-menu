@@ -4,10 +4,12 @@ import { theme } from './theme';
 
 export const GlobalStyle = createGlobalStyle`
   ${reset}
+
   *{
     font-size: 16px;
     box-sizing: border-box;
   }
+
   html{
     font-size: 16px;
     color: ${theme.palette.black};
@@ -17,6 +19,7 @@ export const GlobalStyle = createGlobalStyle`
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
   button {
     color: ${theme.palette.black};
     background: none;
@@ -28,9 +31,11 @@ export const GlobalStyle = createGlobalStyle`
         fill: #f2f3f4;
     }
   }
+
   :focus {
     outline: none;
   }
+  
   ::-webkit-scrollbar {
     display: none;
   }

@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { FC, Fragment, useState } from 'react';
 import ImageButton from '../atoms/ImageButton';
 
 import styled, { css } from 'styled-components';
@@ -79,7 +79,7 @@ interface IUserMenu {
   userMenus: IMenu[];
 }
 
-function UserMenu({ profileURL, userMenus, ...props }: IUserMenu) {
+const UserMenu: FC<IUserMenu> = ({ profileURL, userMenus, ...props }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const onProfileClick = () => {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
@@ -138,13 +138,13 @@ interface ISelectBox extends Omit<IStyledSelectBox, 'isOpen'> {
   handleSelect: (option: string, index: number) => any;
 }
 
-function SelectBox({
+const SelectBox: FC<ISelectBox> = ({
   isDisabled = false,
   label,
   options,
   handleSelect,
   ...props
-}: ISelectBox) {
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const onSelectBoxClick = () => {

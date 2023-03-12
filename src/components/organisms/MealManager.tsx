@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import ImageButton from '../atoms/ImageButton';
 
 import styled, { css } from 'styled-components';
@@ -197,7 +197,7 @@ const EditIcon = styled(PencilSquare)`
   }}
 `;
 
-function MealManager({ ...props }) {
+const MealManager: FC = ({ ...props }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

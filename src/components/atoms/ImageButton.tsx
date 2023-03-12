@@ -1,5 +1,6 @@
+import { FC, ReactElement, useEffect } from 'react';
+
 import styled, { css } from 'styled-components';
-import { ReactElement, useEffect } from 'react';
 
 interface IStyledImageButton {
   width?: number;
@@ -34,13 +35,13 @@ interface IImageButton extends IStyledImageButton {
   onClick: () => any;
 }
 
-function ImageButton({
+const ImageButton: FC<IImageButton> = ({
   imageURL,
   iconElement,
   action,
   onClick,
   ...props
-}: IImageButton) {
+}) => {
   useEffect(() => {
     if (imageURL || iconElement) return;
     throw new Error(`One of 'imageURL' or 'iconElement' must be provided`);

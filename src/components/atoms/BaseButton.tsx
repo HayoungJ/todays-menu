@@ -1,3 +1,5 @@
+import { FC } from 'react';
+
 import styled, { css } from 'styled-components';
 import { lighten, darken } from 'polished';
 
@@ -42,7 +44,7 @@ interface IButton extends IStyledButton {
   onClick: () => any;
 }
 
-function BaseButton({ label, onClick, ...props }: IButton) {
+const BaseButton: FC<IButton> = ({ label, onClick, ...props }) => {
   return (
     <StyledButton {...props} onClick={onClick}>
       {label}

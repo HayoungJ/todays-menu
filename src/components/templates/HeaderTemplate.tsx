@@ -1,3 +1,5 @@
+import { FC } from 'react';
+
 import Image from 'next/image';
 import SelectBox from '../atoms/SelectBox';
 
@@ -33,7 +35,7 @@ interface IHeaderTemplate {
   handleLocationSelect: (option: string, index: number) => any;
 }
 
-function HeaderTemplate({
+const HeaderTemplate: FC<IHeaderTemplate> = ({
   logoURL,
   profileURL,
   location,
@@ -41,7 +43,7 @@ function HeaderTemplate({
   userMenus,
   handleLocationSelect,
   ...props
-}: IHeaderTemplate) {
+}) => {
   return (
     <StyledHeader {...props}>
       <Image src={logoURL} alt="logo" width={160} height={80} />

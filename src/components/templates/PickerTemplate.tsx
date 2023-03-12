@@ -1,4 +1,6 @@
-import MealPicker from '../organisms/MealPicker';
+import { FC } from 'react';
+
+import MealPicker from '../molecules/MealPicker';
 import MealManager from '../organisms/MealManager';
 
 import styled from 'styled-components';
@@ -12,7 +14,7 @@ const StyledTemplate = styled.section`
   width: 50rem;
 `;
 
-function PickerTemplate({ ...props }) {
+const PickerTemplate: FC = ({ ...props }) => {
   return (
     <StyledTemplate {...props}>
       <MealPicker />

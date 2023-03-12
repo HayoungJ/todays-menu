@@ -1,3 +1,5 @@
+import { FC } from 'react';
+
 import Image from 'next/image';
 import BaseButton from '../atoms/BaseButton';
 
@@ -54,12 +56,12 @@ interface ILoginTemplate {
   loginEvent(): any;
 }
 
-function LoginTemplate({
+const LoginTemplate: FC<ILoginTemplate> = ({
   logoURL,
   buttonLabel,
   loginEvent,
   ...props
-}: ILoginTemplate) {
+}) => {
   return (
     <StyledTemplate {...props}>
       <StyledMain>

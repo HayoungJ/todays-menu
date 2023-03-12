@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import ImageButton from '../atoms/ImageButton';
 
 import styled, { css } from 'styled-components';
@@ -125,7 +125,7 @@ interface IMeal {
   text: string;
 }
 
-function MealPicker({ ...props }) {
+const MealPicker: FC = ({ ...props }) => {
   const [mealIndex, setMealIndex] = useState(0);
   const [isPicked, setIsPicked] = useState(false);
   const [meals, setMeals] = useState<(IMealPlaceholder | IMeal)[]>([]);
