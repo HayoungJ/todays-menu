@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { FC } from 'react';
+
 import { useRouter } from 'next/router';
 
 import LoginTemplate from '../../components/templates/LoginTemplate';
@@ -6,25 +7,19 @@ import LoginTemplate from '../../components/templates/LoginTemplate';
 import { AuthError as IAuthError } from 'firebase/auth';
 
 import { googleLogin } from '../../api/auth';
-import { getCookie } from '../../utils/cookie';
 
-export default function LoginPage() {
+const LoginPage: FC = () => {
   const router = useRouter();
-
-  const token = getCookie('token');
 
   const handleGoogleLogin = async () => {
     try {
       await googleLogin();
+      router.push('/');
     } catch (error) {
       const { code, message } = error as unknown as IAuthError;
       console.error(`Google Login ${code} error: ${message}`);
     }
   };
-
-  useEffect(() => {
-    if (token) router.push('/');
-  }, []);
 
   return (
     <LoginTemplate
@@ -34,3 +29,5 @@ export default function LoginPage() {
     />
   );
 }
+
+export default LoginPage;

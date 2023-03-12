@@ -4,11 +4,16 @@ import Head from 'next/head';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+import { UserProvider } from '../contexts/UserContext';
+
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from '../styles/global-style';
 import { theme } from '../styles/theme';
+import { getCookie } from '../utils/cookie';
+import LoginPage from './login';
+import { FC, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-import { UserProvider } from '../contexts/UserContext';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -18,7 +23,16 @@ const client = new QueryClient({
   },
 });
 
-function App({ Component, pageProps }: AppProps) {
+const App: FC<AppProps> = ({ Component, pageProps }) => {
+  const router = useRouter();
+  const token = getCookie('token');
+
+  useEffect(() => {
+    const isLoginPage = router.pathname.includes('login');
+    if (token && isLoginPage) router.push('/');
+    else if (!token && !isLoginPage) router.push('/login');
+  })
+
   return (
     <QueryClientProvider client={client}>
       <Head>
@@ -32,7 +46,7 @@ function App({ Component, pageProps }: AppProps) {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <UserProvider>
-          <Component {...pageProps} />
+          { token ? <Component {...pageProps} /> : <LoginPage /> }
         </UserProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />

@@ -1,21 +1,8 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { getCookie } from '../utils/cookie';
+import { FC } from 'react';
+
 import MainPage from './main';
 
-function Home() {
-  const router = useRouter();
-
-  const token = getCookie('token');
-
-  useEffect(() => {
-    if (token) return;
-
-    router.push({
-      pathname: 'login',
-    });
-  });
-
+const Home: FC = () => {
   return <MainPage></MainPage>;
 }
 
