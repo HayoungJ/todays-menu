@@ -5,12 +5,12 @@ import { theme } from './theme';
 export const GlobalStyle = createGlobalStyle`
   ${reset}
 
-  *{
+  * {
     font-size: 16px;
     box-sizing: border-box;
   }
 
-  html{
+  html {
     font-size: 16px;
     color: ${theme.palette.black};
     -webkit-text-size-adjust: none;
@@ -30,6 +30,13 @@ export const GlobalStyle = createGlobalStyle`
         cursor: default;
         fill: #f2f3f4;
     }
+  }
+
+  .text-limit {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   :focus {
