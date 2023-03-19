@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 
 import styled, { css } from 'styled-components';
 import { lighten, darken } from 'polished';
@@ -44,7 +44,7 @@ const StyledButton = styled.button<IStyledButton>`
 interface IButton extends IStyledButton {
   label: string;
   isDisabled?: boolean;
-  onClick: () => any;
+  onClick: (event: MouseEvent) => any;
 }
 
 const BaseButton: FC<IButton> = ({ label, isDisabled = false, onClick, ...props }) => {
