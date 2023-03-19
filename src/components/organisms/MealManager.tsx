@@ -203,9 +203,10 @@ const EditIcon = styled(PencilSquare)`
 interface IMealManager {
   meals: IMeal[];
   handleAdd: () => any;
+  handleDelete: (meal: IMeal) => any;
 }
 
-const MealManager: FC<IMealManager> = ({ meals, handleAdd, ...props }) => {
+const MealManager: FC<IMealManager> = ({ meals, handleAdd, handleDelete, ...props }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -245,24 +246,24 @@ const MealManager: FC<IMealManager> = ({ meals, handleAdd, ...props }) => {
                     ))
                   }
                 </ul>
-                <p className="distance">
+                {/* <p className="distance">
                   걸어서 <strong>{ meal.far }</strong>분 거리
-                </p>
+                </p> */}
                 <CardButtons>
                   <ImageButton
                     iconElement={<DeleteIcon />}
                     action="delete"
                     width={1.3}
                     shape="square"
-                    onClick={() => {}}
+                    onClick={() => handleDelete(meal)}
                   />
-                  <ImageButton
+                  {/* <ImageButton
                     iconElement={<EditIcon />}
                     action="edit"
                     width={1.3}
                     shape="square"
                     onClick={() => {}}
-                  />
+                  /> */}
                 </CardButtons>
               </RestaurantCard>
             ))
