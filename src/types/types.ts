@@ -27,6 +27,7 @@ export interface ILocation {
 };
 
 export interface IMeal {
+  id?: string;
   name: string;
   category: string;
   address: string;
