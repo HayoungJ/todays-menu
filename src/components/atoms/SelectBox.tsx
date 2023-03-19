@@ -96,6 +96,8 @@ const StyledOptions = styled.ul`
       border-radius: ${borderRadius};
 
       background-color: ${palette.white};
+
+      z-index: 21;
     `;
   }}
 `;
@@ -167,7 +169,10 @@ const SelectBox: FC<ISelectBox> = ({
             <StyledOption
               key={index}
               className={option === label ? 'on' : ''}
-              onClick={() => handleSelect(option, index)}
+              onClick={() => {
+                handleSelect(option, index)
+                setIsOpen(false);
+              }}
             >
               {option}
             </StyledOption>
