@@ -212,7 +212,7 @@ const LocationList: FC<ILocationList> = ({ locations, searchResult, selectedResu
       return;
     }
     setKeyword(selectedResult.address);
-  }, [selectedResult])
+  }, [selectedResult]);
 
   return (
     <>
