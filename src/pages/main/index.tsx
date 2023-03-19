@@ -264,6 +264,7 @@ const MainPage: FC = () => {
       await getMeals();
     }
     fetchData();
+    setIsMealAdded(false);
   }, [isMealAdded]);
 
   return (
