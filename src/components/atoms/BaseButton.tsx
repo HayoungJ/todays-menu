@@ -25,9 +25,7 @@ const StyledButton = styled.button<IStyledButton>`
 
       color: ${palette.white};
       font-weight: 600;
-      font-size: ${textSize ? `${fontSize[textSize]}` : 'base'};
-
-      cursor: pointer;
+      font-size: ${textSize ? `${fontSize[textSize]}` : `${fontSize.base}`};
 
       &:hover {
         background: ${lighten(0.1, palette[color])};
@@ -35,18 +33,23 @@ const StyledButton = styled.button<IStyledButton>`
       &:active {
         background: ${darken(0.1, palette[color])};
       }
+      &:disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+      }
     `;
   }}
 `;
 
 interface IButton extends IStyledButton {
   label: string;
+  isDisabled?: boolean;
   onClick: () => any;
 }
 
-const BaseButton: FC<IButton> = ({ label, onClick, ...props }) => {
+const BaseButton: FC<IButton> = ({ label, isDisabled = false, onClick, ...props }) => {
   return (
-    <StyledButton {...props} onClick={onClick}>
+    <StyledButton {...props} onClick={onClick} disabled={isDisabled}>
       {label}
     </StyledButton>
   );
