@@ -120,15 +120,15 @@ interface IMealPlaceholder {
   image: string;
 }
 
-interface IMeal {
+interface IMealPicked {
   type: 'text';
   text: string;
 }
 
-const MealPicker: FC = ({ ...props }) => {
+const MealPicker: FC<{ meal: string | null }> = ({ meal, ...props }) => {
   const [mealIndex, setMealIndex] = useState(0);
   const [isPicked, setIsPicked] = useState(false);
-  const [meals, setMeals] = useState<(IMealPlaceholder | IMeal)[]>([]);
+  const [meals, setMeals] = useState<(IMealPlaceholder | IMealPicked)[]>([]);
 
   const handlePick = () => {
     setMealIndex(meals.length - 1);
@@ -149,8 +149,14 @@ const MealPicker: FC = ({ ...props }) => {
       };
       meals.push(placeholder);
     }
+    if (meal) {
+      meals.push({
+        type: 'text',
+        text: meal,
+      } as IMealPicked);
+    }
     setMeals(meals);
-  }, []);
+  }, [meal]);
 
   return (
     <StyledPicker {...props}>
