@@ -7,7 +7,8 @@ import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
 
 import { HddNetwork, Trash3Fill } from '@styled-icons/bootstrap';
-import { IMeal } from '../../types/types';
+import { ILocation, IMeal } from '../../types/types';
+import useDebounce from '../../hooks/useDebounce';
 
 const RestaurantForm = styled.form`
   ${({ theme }) => {
@@ -149,15 +150,18 @@ const DeleteButton = styled(ImageButton)`
 
 interface IMealForm {
   meal: IMeal;
+  searchResult: ILocation[];
+  selectedResult: ILocation | null;
+  handleSearch: (value: string) => void;
+  handleSearchSelect: (value: ILocation) => void;
   handleMealChange: (value: string | { food: string, price: string }[], key: 'name' | 'category' | 'address' | 'foods') => any;
 }
 
-const MealForm: FC<IMealForm> = ({ meal, handleMealChange, ...props }) => {
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [category, setCategory] = useState('');
-  const [foods, setFoods] = useState<{ food: string, price: string }[]>([{ food: '', price: '' }]);
+const MealForm: FC<IMealForm> = ({ meal, searchResult, selectedResult, handleSearch, handleSearchSelect, handleMealChange, ...props }) => {
+  const [keyword, setKeyword] = useState('');
 
+  const debouncedKeyword = useDebounce(keyword, 1000);
+  
   const addNewFood = (event: MouseEvent) => {
     event.preventDefault();
     const foods = [
@@ -171,7 +175,8 @@ const MealForm: FC<IMealForm> = ({ meal, handleMealChange, ...props }) => {
   }
 
   const deleteFood = (deleteIndex: number) => {
-    setFoods(foods.filter((food, index) => index !== deleteIndex));
+    const foods = meal.foods.filter((food, index) => index !== deleteIndex);
+    handleMealChange(foods, 'foods');
   }
 
   const onInput = (event: ChangeEvent<HTMLInputElement>, key: 'name' | 'address') => {
@@ -192,38 +197,57 @@ const MealForm: FC<IMealForm> = ({ meal, handleMealChange, ...props }) => {
 
   const onFoodInput = (event: ChangeEvent<HTMLInputElement>, index: number, key: 'food' | 'price') => {
     const value = event.target.value;
-    const newFoods = [...foods];
+    const newFoods = [...meal.foods];
     newFoods[index][key] = value;
-    setFoods(newFoods);
+    handleMealChange(newFoods, 'foods');
   }
 
-  const searchResult = [] as { name: string, address: string}[];
+  const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setKeyword(value);
+  };
+
+  useEffect(() => {
+    handleSearch(debouncedKeyword);
+  }, [debouncedKeyword]);
+
+  useEffect(() => {
+    if (!selectedResult) {
+      setKeyword('');
+      return;
+    }
+    setKeyword(selectedResult.address);
+  }, [selectedResult]);
+
+  useEffect(() => {
+    handleMealChange(keyword, 'address');
+  }, [keyword]);
 
   return (
     <RestaurantForm {...props}> 
       <TitleForm>
         <input
-          value={name}
+          value={meal.name}
           placeholder="식당 이름"
           onInput={(event: ChangeEvent<HTMLInputElement>) => onInput(event, 'name')}
         />
         <CategorySelectBox
-          label={category === '' ? "분류" : category}
+          label={meal.category === '' ? "분류" : meal.category}
           options={['한식', '양식', '중식', '일식', '기타']}
           handleSelect={selectCategory}
         />
       </TitleForm>
       <LocationForm>
         <input
-          value={address}
+          value={keyword}
           placeholder="위치"
-          onInput={(event: ChangeEvent<HTMLInputElement>) => onInput(event, 'address')}
+          onInput={onSearch}
         />
-        { SearchResults.length > 0 && <SearchResults>
+        { searchResult.length > 0 && <SearchResults>
           { searchResult.map((result, index) =>
             <SearchResult
               key={index}
-              onClick={() => {}}
+              onClick={() => handleSearchSelect(result)}
             >
               { `${result.address} (${result.name})` }
             </SearchResult>) }
@@ -232,7 +256,7 @@ const MealForm: FC<IMealForm> = ({ meal, handleMealChange, ...props }) => {
       <FoodForm>
         <>
         <li>메뉴</li>
-        { foods.map((food, index) => 
+        { meal.foods.map((food, index) => 
           <li key={index}>
             <input
               value={food.food}
