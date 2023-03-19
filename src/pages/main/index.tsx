@@ -17,7 +17,7 @@ import { useModal } from '../../contexts/ModalContext';
 import { ILocation, IMeal } from '../../types/types';
 
 import styled, { css } from 'styled-components';
-import { createUserLocation, createLocationMeal, deleteUserLocation, getLocationMeals, getUserLocations } from '../../api/common';
+import { createUserLocation, createLocationMeal, deleteUserLocation, getLocationMeals, getUserLocations, deleteLocationMeal } from '../../api/common';
 
 const StyledMain = styled.main`
   display: flex;
@@ -86,6 +86,7 @@ const MainPage: FC = () => {
   });
   const [searchResult, setSearchResult] = useState<ILocation[]>([]);
   const [selectedResult, setSelectedResult] = useState<ILocation | null>(null);
+  const [isSearchable, setIsSearchable] = useState(true);
   const [meals, setMeals] = useState<IMeal[]>([]);
   const [meal, setMeal] = useState<IMeal | null>(null);
   const [newMeal, setNewMeal] = useState<IMeal>({
@@ -98,6 +99,7 @@ const MainPage: FC = () => {
     }],
     far: 0,
   });
+  const [isMealAdded, setIsMealAdded] = useState(false);
 
   const onLocationSelect = (option: string, index: number) => {
     setLocation(locations[index]);
@@ -112,6 +114,10 @@ const MainPage: FC = () => {
   }
 
   const handleSearch = async (keyword: string) => {
+    if (!isSearchable) {
+      setIsSearchable(true);
+      return;
+    }
     if (keyword === '') {
       setSearchResult([]);
       setSelectedResult(null);
@@ -131,6 +137,8 @@ const MainPage: FC = () => {
 
   const handleSearchSelect = (value: ILocation) => {
     setSelectedResult(value);
+    setSearchResult([]);
+    setIsSearchable(false);
   }
 
   const handleDelete = async (location: ILocation) => {
@@ -153,20 +161,20 @@ const MainPage: FC = () => {
     setLocations(locations);
   }
 
-  const getMeals = async (locationId: string) => {
-    const meals = await getLocationMeals(locationId).then((data) => {
-      return data ? Object.values(data) : [];
-    }) as IMeal[];
+  const getMeals = async () => {
+    if (!location?.id) return;
+    const meals = await getLocationMeals(location.id).then((data) => {
+      return data ? Object.keys(data).map((id) => {
+        return {
+          id,
+          ...data[id]
+        }
+      }) : [];
+    });
     setMeals(meals);
   }
 
   const onMealCancel = () => {
-
-  }
-
-  const onMealSubmit = () => {
-    if (!location?.id) return;
-    createLocationMeal(location.id, newMeal);
     setNewMeal({
       name: '',
       category: '',
@@ -179,10 +187,37 @@ const MainPage: FC = () => {
     });
   }
 
-  const handleMealChange = (value: string | { food: string, price: string }[], key: 'name' | 'category' | 'address' | 'foods') => {
+  const onMealSubmit = () => {
+    setIsMealAdded(true);
+  }
+
+  const createMeal = async () => {
+    if (!location?.id) return;
+    await createLocationMeal(location.id, newMeal);
     setNewMeal({
-      ...newMeal,
-      [key]: value,
+      name: '',
+      category: '',
+      address: '',
+      foods: [{
+        food: '',
+        price: '',
+      }],
+      far: 0,
+    });
+  }
+
+  const deleteMeal = async (meal: IMeal) => {
+    if (!location?.id || !meal?.id) return;
+    await deleteLocationMeal(location.id, meal.id);
+    await getMeals();
+  }
+
+  const handleMealChange = (value: string | { food: string, price: string }[], key: 'name' | 'category' | 'address' | 'foods') => {
+    setNewMeal((prevNewMeal) => {
+      return {
+        ...prevNewMeal,
+        [key]: value,
+      }
     });
   }
 
@@ -209,8 +244,7 @@ const MainPage: FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!location?.id) return;
-      await getMeals(location.id);
+      await getMeals();
     }
     fetchData();
   }, [location]);
@@ -221,6 +255,16 @@ const MainPage: FC = () => {
     const index = Math.round(Math.random() * (length - 1));
     setMeal(meals[index]);
   }, [meals]);
+
+  useEffect(() => {
+    if (!isMealAdded) return;
+    const fetchData = async () => {
+      if (!location?.id) return;
+      await createMeal();
+      await getMeals();
+    }
+    fetchData();
+  }, [isMealAdded]);
 
   return (
     <StyledMain>
@@ -239,9 +283,10 @@ const MainPage: FC = () => {
         meal={meal}
         handleAdd={() => openMealModal({ 
           id: 'meal',
-          onCancel: () => onMealCancel,
+          onCancel: () => onMealCancel(),
           onSubmit: () => onMealSubmit(),
         })}
+        handleDelete={deleteMeal}
       />
       <BaseModal
         id="location"
@@ -267,6 +312,10 @@ const MainPage: FC = () => {
           <ModalContent>
             <MealForm
               meal={newMeal}
+              searchResult={searchResult}
+              selectedResult={selectedResult}
+              handleSearch={handleSearch}
+              handleSearchSelect={handleSearchSelect}
               handleMealChange={handleMealChange}
             />
           </ModalContent>
