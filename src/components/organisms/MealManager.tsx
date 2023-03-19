@@ -1,5 +1,6 @@
-import { useState, useEffect, FC } from 'react';
+import { useState, FC } from 'react';
 import ImageButton from '../atoms/ImageButton';
+import BaseButton from '../atoms/BaseButton';
 
 import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
@@ -9,6 +10,7 @@ import {
   Trash3Fill,
   PencilSquare,
 } from '@styled-icons/bootstrap';
+import { IMeal } from '../../types/types';
 
 const StyledManager = styled.aside<{ isOpen: boolean }>`
   ${({ theme, isOpen }) => {
@@ -31,7 +33,7 @@ const StyledManager = styled.aside<{ isOpen: boolean }>`
 
       border-radius: 1rem 0 0 1rem;
 
-      z-index: ${isOpen ? 50 : 0};
+      z-index: ${isOpen ? 15 : 0};
 
       transform: translateX(${isOpen ? 0 : `calc(100% - 3.5rem)`});
       transition: transform 330ms ease-in-out;
@@ -63,6 +65,8 @@ const StyledIcon = styled(CustomIcon)<{ isOpen: boolean }>`
 const ManagerContainer = styled.section`
   flex: 1;
   height: 100%;
+
+  position: relative;
 `;
 
 const RestaurantsWrap = styled.ul`
@@ -71,6 +75,12 @@ const RestaurantsWrap = styled.ul`
   justify-content: space-between;
 
   padding: 3rem 4rem 1rem 2rem;
+`;
+
+const RestaurantAddButton = styled(BaseButton)`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 `;
 
 const RestaurantCard = styled.li`
@@ -190,7 +200,12 @@ const EditIcon = styled(PencilSquare)`
   }}
 `;
 
-const MealManager: FC = ({ ...props }) => {
+interface IMealManager {
+  meals: IMeal[];
+  handleAdd: () => any;
+}
+
+const MealManager: FC<IMealManager> = ({ meals, handleAdd, ...props }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -203,55 +218,55 @@ const MealManager: FC = ({ ...props }) => {
         onClick={() => setIsOpen(!isOpen)}
       />
       <ManagerContainer>
+        <RestaurantAddButton
+          label="추가"
+          color="red"
+          width={5}
+          onClick={() => handleAdd()}
+        />
         <RestaurantsWrap>
-          <RestaurantCard>
-            <h5 className="title">
-              <strong>양식</strong>
-              <span className="text-limit">
-                파스타어쩌구파스타어쩌구파스타어쩌구파스타어쩌구파스타어쩌구파스타어쩌구파스타어쩌구파스타어쩌구
-              </span>
-            </h5>
-            <ul className="foods">
-              <li className="food">
-                <strong className="text-limit">
-                  알리오 올리오알리오 올리오알리오 올리오알리오 올리오알리오
-                  올리오알리오 올리오알리오 올리오
-                </strong>
-                <span>18000원</span>
-              </li>
-              <li className="food">
-                <strong className="text-limit">로제 파스타</strong>
-                <span>8000원</span>
-              </li>
-              <li className="food">
-                <strong className="text-limit">알리오 올리오</strong>
-                <span>8000원</span>
-              </li>
-              <li className="food">
-                <strong className="text-limit">알리오 올리오</strong>
-                <span>8000원</span>
-              </li>
-            </ul>
-            <p className="distance">
-              걸어서 <strong>5</strong>분 거리
-            </p>
-            <CardButtons>
-              <ImageButton
-                iconElement={<DeleteIcon />}
-                action="delete"
-                width={1.3}
-                shape="square"
-                onClick={() => {}}
-              />
-              <ImageButton
-                iconElement={<EditIcon />}
-                action="edit"
-                width={1.3}
-                shape="square"
-                onClick={() => {}}
-              />
-            </CardButtons>
-          </RestaurantCard>
+          {
+            meals.map((meal, index) => (
+              <RestaurantCard key={index}>
+                <h5 className="title">
+                  <strong>{ meal.name }</strong>
+                  <span className="text-limit">{ meal.category }</span>
+                </h5>
+                <ul className="foods">
+                  {
+                    meal.foods.map((food, index) => (
+                      <li
+                        key={`${meal.name}-${index}`}
+                        className="food"
+                      >
+                        <strong className="text-limit">{ food.food }</strong>
+                        <span>{ food.price }원</span>
+                      </li>
+                    ))
+                  }
+                </ul>
+                <p className="distance">
+                  걸어서 <strong>{ meal.far }</strong>분 거리
+                </p>
+                <CardButtons>
+                  <ImageButton
+                    iconElement={<DeleteIcon />}
+                    action="delete"
+                    width={1.3}
+                    shape="square"
+                    onClick={() => {}}
+                  />
+                  <ImageButton
+                    iconElement={<EditIcon />}
+                    action="edit"
+                    width={1.3}
+                    shape="square"
+                    onClick={() => {}}
+                  />
+                </CardButtons>
+              </RestaurantCard>
+            ))
+          }
         </RestaurantsWrap>
       </ManagerContainer>
     </StyledManager>
