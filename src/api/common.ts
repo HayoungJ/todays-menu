@@ -49,3 +49,11 @@ export const deleteUserLocation = async (userId: string, locationId: string) => 
     console.error(error);
   }
 }
+
+export const deleteLocationMeal = async (locationId: string, mealId: string) => {
+  try {
+    await remove(ref(database, `locations/${locationId}/meals/${mealId}`));
+  } catch (error) {
+    console.error(error);
+  }
+}
