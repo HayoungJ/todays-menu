@@ -4,6 +4,7 @@ import MealPicker from '../molecules/MealPicker';
 import MealManager from '../organisms/MealManager';
 
 import styled from 'styled-components';
+import { IMeal } from '../../types/types';
 
 const StyledTemplate = styled.section`
   display: flex;
@@ -14,11 +15,22 @@ const StyledTemplate = styled.section`
   width: 50rem;
 `;
 
-const PickerTemplate: FC = ({ ...props }) => {
+interface IPicker {
+  meals: IMeal[];
+  meal: IMeal | null;
+  handleAdd: () => any;
+  handleDelete: (meal: IMeal) => any;
+}
+
+const PickerTemplate: FC<IPicker> = ({ meals, meal, handleAdd, handleDelete, ...props }) => {
   return (
     <StyledTemplate {...props}>
-      <MealPicker />
-      <MealManager />
+      <MealPicker meal={meal ? meal.name : null} />
+      <MealManager
+        meals={meals}
+        handleAdd={handleAdd}
+        handleDelete={handleDelete}
+      />
     </StyledTemplate>
   );
 }
