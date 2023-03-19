@@ -18,9 +18,18 @@ export interface IKakaoMapSearchResult {
   y: string;
 }
 
-export interface ISearchResult {
+export interface ILocation {
+  id?: string;
   name: string;
   address: string;
   longitude: string;
   latitude: string;
 };
+
+export interface IMeal {
+  name: string;
+  category: string;
+  address: string;
+  foods: { food: string, price: string }[];
+  far: number;
+}
