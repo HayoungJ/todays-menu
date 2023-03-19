@@ -4,10 +4,13 @@ import styled, { css } from "styled-components";
 import { lighten } from 'polished';
 
 import BaseButton from "../atoms/BaseButton";
+import ImageButton from "../atoms/ImageButton";
 
 import useDebounce from "../../hooks/useDebounce";
 
-import { ISearchResult } from "../../types/types";
+import { ILocation } from "../../types/types";
+
+import { Trash3Fill } from '@styled-icons/bootstrap';
 
 const LocationItems = styled.ul`
   ${({ theme }) => {
@@ -61,9 +64,12 @@ const Location = styled.p`
   ${({ theme }) => {
     const { palette } = theme;
     return css`
+      display: flex;
+      flex-flow: row nowrap;
       flex: 1;
+      justify-content: space-between;
 
-      padding: 0 1rem;
+      padding: 0 0.3rem 0 1rem;
     `;
   }}
 `;
@@ -143,29 +149,46 @@ const SearchResult = styled.li`
   }} 
 `;
 
-type location = {
-  name: string,
-  address: string,
-};
+const DeleteIcon = styled(Trash3Fill)`
+  ${({ theme }) => {
+    const { palette } = theme;
+    return css`
+      color: ${palette.gray};
+
+      &:hover {
+        color: ${palette.red};
+      }
+    `;
+  }}
+`;
+
+const DeleteButton = styled(ImageButton)`
+  margin-top: 5px;
+`;
 
 interface ILocationList {
-  locations: location[];
-  searchResult: ISearchResult[];
-  selectedResult: ISearchResult | null;
-  handleSumbit: (name: string, address: string) => void;
+  locations: ILocation[];
+  searchResult: ILocation[];
+  selectedResult: ILocation | null;
+  handleSubmit: (location: ILocation) => void;
   handleSearch: (value: string) => void;
-  handleSearchSelect: (value: ISearchResult) => void;
+  handleSearchSelect: (value: ILocation) => void;
+  handleDelete: (location: ILocation) => void;
 }
 
-const LocationList: FC<ILocationList> = ({ locations, searchResult, selectedResult, handleSumbit, handleSearch, handleSearchSelect }) => {
+const LocationList: FC<ILocationList> = ({ locations, searchResult, selectedResult, handleSubmit, handleSearch, handleSearchSelect, handleDelete }) => {
   const [name, setName] = useState('');
   const [keyword, setKeyword] = useState('');
 
   const debouncedKeyword = useDebounce(keyword, 1000);
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    handleSumbit(name, keyword);
+  const onSubmit = (event?: FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
+    if (name === '' || !selectedResult) return;
+    handleSubmit({
+      ...selectedResult,
+      name,
+    });
     setName('');
     setKeyword('');
   }
@@ -195,10 +218,19 @@ const LocationList: FC<ILocationList> = ({ locations, searchResult, selectedResu
     <>
       <LocationItems>
         {
-          locations.map((location) => (
-            <LocationItem>
+          locations.map((location, index) => (
+            <LocationItem key={index}>
               <LocationName className='text-limit'>{ location.name }</LocationName>
-              <Location>{ location.address } </Location>
+              <Location>
+                <span>{ location.address }</span>
+                <DeleteButton
+                  iconElement={<DeleteIcon />}
+                  action="delete"
+                  width={1.2}
+                  shape="square"
+                  onClick={() => {handleDelete(location)}}
+                />
+              </Location>
             </LocationItem>
           ))
         }
