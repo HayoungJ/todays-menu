@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { UserProvider } from '../contexts/UserContext';
+import { ModalProvider } from '../contexts/ModalContext';
 
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from '../styles/global-style';
@@ -53,9 +54,11 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <UserProvider>
-          { !isLoading ? token ? <Component {...pageProps} /> : <LoginPage /> : <></> }
-        </UserProvider>
+        <ModalProvider>
+          <UserProvider>
+            { !isLoading ? token ? <Component {...pageProps} /> : <LoginPage /> : <></> }
+          </UserProvider>
+        </ModalProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
