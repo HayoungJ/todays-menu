@@ -10,7 +10,12 @@ class MyDocument extends Document {
       ctx.renderPage = () =>
         originalRenderPage({
           enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
+            sheet.collectStyles(
+              <>
+                <App {...props} />
+                <div id="modal-root" />
+              </>
+            ),
         });
 
       const initialProps = await Document.getInitialProps(ctx);
