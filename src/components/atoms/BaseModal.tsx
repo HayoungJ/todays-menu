@@ -39,6 +39,7 @@ const StyledModal = styled.dialog`
 
       width: 700px;
       min-height: 500px;
+      max-height: 700px;
 
       margin: 0;
       padding: 0.7rem 1.3rem;
@@ -51,6 +52,8 @@ const StyledModal = styled.dialog`
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+
+      overflow: auto;
     `;
   }}
 `;
@@ -73,17 +76,18 @@ const ModalFooter = styled.section`
 `;
 
 interface IBaseModal {
+  id: string;
   Title: ReactNode;
   Content: ReactNode;
 }
 
-const BaseModal: FC<IBaseModal> = ({ Title, Content, ...props }) => {
-  const { isOpen, closeModal, modalDispatch } = useModal();
-  const { onCancel, onSubmit } = modalDispatch;
+const BaseModal: FC<IBaseModal> = ({ id, Title, Content, ...props }) => {
+  const { openedModals, closeModal, modalData } = useModal();
+  const { onCancel, onSubmit } = modalData;
 
   return (
     <>
-      { isOpen && createPortal(
+      { openedModals.includes(id) && createPortal(
         <StyledModalWrap {...props}>
           <StyledModalBackground />
           <StyledModal>
@@ -96,20 +100,26 @@ const BaseModal: FC<IBaseModal> = ({ Title, Content, ...props }) => {
                     label="취소"
                     color="gray"
                     width={10}
-                    onClick={onCancel}
+                    onClick={() => {
+                      onCancel();
+                      closeModal(id);
+                    }}
                   />
                   <BaseButton
                     label="등록"
                     color="red"
                     width={10}
-                    onClick={onSubmit}
+                    onClick={() => {
+                      onSubmit();
+                      closeModal(id);
+                    }}
                   />
                 </> :
                 <BaseButton
                   label="닫기"
                   color="red"
                   width={10}
-                  onClick={closeModal}
+                  onClick={() => closeModal(id)}
                 />
               }
             </ModalFooter>
