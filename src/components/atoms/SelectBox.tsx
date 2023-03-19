@@ -22,7 +22,7 @@ const StyledSelectBox = styled.div<Omit<IStyledSelectBox, 'isOpen'>>`
   }}
 `;
 
-const StyledLabel = styled.button<Pick<IStyledSelectBox, 'isOpen'>>`
+const StyledLabel = styled.div<Pick<IStyledSelectBox, 'isOpen'>>`
   ${({ theme, isOpen }) => {
     const { palette, fontSize, borderRadius } = theme;
     return css`
@@ -78,13 +78,12 @@ const StyledIcon = styled(CustomIcon)<Pick<IStyledSelectBox, 'isOpen'>>`
   }}
 `;
 
-const StyledOptions = styled.ul<Pick<IStyledSelectBox, 'isOpen'>>`
-  ${({ theme, isOpen }) => {
+const StyledOptions = styled.ul`
+  ${({ theme }) => {
     const { palette, borderRadius } = theme;
     return css`
       position: absolute;
 
-      opacity: ${isOpen ? 1 : 0};
       transition: opacity 330ms ease-in-out;
 
       width: 100%;
@@ -162,17 +161,19 @@ const SelectBox: FC<ISelectBox> = ({
         <span>{label}</span>
         <StyledIcon isOpen={isOpen} />
       </StyledLabel>
-      <StyledOptions {...props} isOpen={isOpen}>
-        {options.map((option, index) => (
-          <StyledOption
-            key={index}
-            className={option === label ? 'on' : ''}
-            onClick={() => handleSelect(option, index)}
-          >
-            {option}
-          </StyledOption>
-        ))}
-      </StyledOptions>
+      { isOpen && 
+        <StyledOptions {...props}>
+          {options.map((option, index) => (
+            <StyledOption
+              key={index}
+              className={option === label ? 'on' : ''}
+              onClick={() => handleSelect(option, index)}
+            >
+              {option}
+            </StyledOption>
+          ))}
+        </StyledOptions>
+      }
     </StyledSelectBox>
   );
 }
