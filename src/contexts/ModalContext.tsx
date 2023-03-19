@@ -1,39 +1,44 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
 
-interface IModalDispatch {
+interface IModalData {
+  id?: string;
   onClose?: () => any; 
   onCancel?: () => any;
   onSubmit?: () => any;
 };
 
 const ModalContext = createContext<{
-  isOpen: boolean,
-  openModal: (modalDispatch: IModalDispatch) => any;
-  closeModal: () => any;
-  modalDispatch: IModalDispatch;
+  openedModals: string[],
+  openModal: (modalData: IModalData) => any;
+  closeModal: (id: string) => any;
+  modalData: IModalData;
 }>({} as any);
 
 export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalDispatch, setModalDispatch] = useState<IModalDispatch>({});
+  const [openedModals, setOpenedModal] = useState<string[]>([]);
+  const [modalData, setModalData] = useState<IModalData>({});
 
-  const openModal = ({ onClose, onCancel, onSubmit }: IModalDispatch) => {
-    setIsOpen(true);
-    setModalDispatch({
+  const openModal = ({ id, onClose, onCancel, onSubmit }: IModalData) => {
+    if (!id) return;
+    setOpenedModal([
+      ...openedModals,
+      id,
+    ])
+    setModalData({
       onClose,
       onCancel,
       onSubmit,
     });
   }
 
-  const closeModal = () => {
-    modalDispatch.onClose?.();
-    setIsOpen(false);
-    setModalDispatch({});
+  const closeModal = (id: string) => {
+    modalData.onClose?.();
+    setOpenedModal(openedModals.filter((modal => modal !== id)));
+    setModalData({});
   }
 
   return (
-    <ModalContext.Provider value={{ isOpen, openModal, closeModal, modalDispatch }}>
+    <ModalContext.Provider value={{ openedModals, openModal, closeModal, modalData }}>
       { children }
     </ModalContext.Provider>
   )
