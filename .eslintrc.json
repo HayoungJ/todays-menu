@@ -24,8 +24,9 @@
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@next/next/recommended",
     "plugin:prettier/recommended",
+    "plugin:jest/recommended"
   ],
-  "plugins": ["prettier", "@typescript-eslint", "import"],
+  "plugins": ["prettier", "@typescript-eslint", "jest", "import"],
   "rules": {
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "import/extensions": [
