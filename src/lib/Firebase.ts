@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getDatabase } from 'firebase/database'
 // import { getAnalytics } from 'firebase/analytics';
 
 const firebaseConfig = {
@@ -10,6 +11,7 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSASING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  databaseURL: process.env.NEXY_PUBLIC_FIREBASE_DATABASE_URL,
 };
 
 // Initialize Firebase
@@ -18,5 +20,7 @@ const app = initializeApp(firebaseConfig);
 // Firebase Auth Setting
 export const auth = getAuth(app);
 auth.useDeviceLanguage();
+
+export const database = getDatabase(app);
 
 // const analytics = getAnalytics(app);
