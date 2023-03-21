@@ -44,6 +44,16 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   ::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 13px 13px #888;
+    border: solid 3px transparent;
+    border-radius: 12px;
+  }  
+
+  ::-webkit-scrollbar-button {
     display: none;
   }
 `;
