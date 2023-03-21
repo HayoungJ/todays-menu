@@ -6,7 +6,7 @@ import SelectBox from '../atoms/SelectBox';
 import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
 
-import { HddNetwork, Trash3Fill } from '@styled-icons/bootstrap';
+import { Trash3Fill } from '@styled-icons/bootstrap';
 import { ILocation, IMeal } from '../../types/types';
 import useDebounce from '../../hooks/useDebounce';
 
@@ -154,13 +154,13 @@ interface IMealForm {
   selectedResult: ILocation | null;
   handleSearch: (value: string) => void;
   handleSearchSelect: (value: ILocation) => void;
-  handleMealChange: (value: string | { food: string, price: string }[], key: 'name' | 'category' | 'address' | 'foods') => any;
+  handleMealInput: (value: string | { food: string, price: string }[], key: 'name' | 'category' | 'address' | 'foods') => any;
 }
 
-const MealForm: FC<IMealForm> = ({ meal, searchResult, selectedResult, handleSearch, handleSearchSelect, handleMealChange, ...props }) => {
+const MealForm: FC<IMealForm> = ({ meal, searchResult, selectedResult, handleSearch, handleSearchSelect, handleMealInput, ...props }) => {
   const [keyword, setKeyword] = useState('');
 
-  const debouncedKeyword = useDebounce(keyword, 1000);
+  const debouncedKeyword = useDebounce(keyword, 500);
   
   const addNewFood = (event: MouseEvent) => {
     event.preventDefault();
@@ -171,35 +171,35 @@ const MealForm: FC<IMealForm> = ({ meal, searchResult, selectedResult, handleSea
         price: '',
       }
     ];
-    handleMealChange(foods, 'foods');
+    handleMealInput(foods, 'foods');
   }
 
   const deleteFood = (deleteIndex: number) => {
     const foods = meal.foods.filter((food, index) => index !== deleteIndex);
-    handleMealChange(foods, 'foods');
+    handleMealInput(foods, 'foods');
   }
 
   const onInput = (event: ChangeEvent<HTMLInputElement>, key: 'name' | 'address') => {
     const value = event.target.value;
     switch(key) {
       case 'name':
-        handleMealChange(value, 'name');
+        handleMealInput(value, 'name');
         break;
       case 'address':
-        handleMealChange(value, 'address');
+        handleMealInput(value, 'address');
         break;
     }
   }
 
   const selectCategory = (option: string) => {
-    handleMealChange(option, 'category')
+    handleMealInput(option, 'category')
   }
 
   const onFoodInput = (event: ChangeEvent<HTMLInputElement>, index: number, key: 'food' | 'price') => {
     const value = event.target.value;
     const newFoods = [...meal.foods];
     newFoods[index][key] = value;
-    handleMealChange(newFoods, 'foods');
+    handleMealInput(newFoods, 'foods');
   }
 
   const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -220,7 +220,7 @@ const MealForm: FC<IMealForm> = ({ meal, searchResult, selectedResult, handleSea
   }, [selectedResult]);
 
   useEffect(() => {
-    handleMealChange(keyword, 'address');
+    handleMealInput(keyword, 'address');
   }, [keyword]);
 
   return (

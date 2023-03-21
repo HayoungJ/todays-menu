@@ -180,7 +180,7 @@ const LocationList: FC<ILocationList> = ({ locations, searchResult, selectedResu
   const [name, setName] = useState('');
   const [keyword, setKeyword] = useState('');
 
-  const debouncedKeyword = useDebounce(keyword, 1000);
+  const debouncedKeyword = useDebounce(keyword, 500);
 
   const onSubmit = (event?: FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
