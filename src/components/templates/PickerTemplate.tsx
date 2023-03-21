@@ -18,22 +18,22 @@ const StyledTemplate = styled.section`
 interface IPicker {
   meals: IMeal[];
   meal: IMeal | null;
-  handlePickMeal: () => any;
-  handleAddMeal: () => any;
-  handleDeleteMeal: (meal: IMeal) => any;
+  handleMealPick: () => any;
+  handleMealAdd: () => any;
+  handleMealDelete: (meal: IMeal) => any;
 }
 
-const PickerTemplate: FC<IPicker> = ({ meals, meal, handlePickMeal, handleAddMeal, handleDeleteMeal, ...props }) => {
+const PickerTemplate: FC<IPicker> = ({ meals, meal, handleMealPick, handleMealAdd, handleMealDelete, ...props }) => {
   return (
     <StyledTemplate {...props}>
       <MealPicker
         meal={meal ? meal.name : null}
-        handlePick={handlePickMeal}
+        handlePick={handleMealPick}
       />
       <MealManager
         meals={meals}
-        handleAdd={handleAddMeal}
-        handleDelete={handleDeleteMeal}
+        handleAdd={handleMealAdd}
+        handleDelete={handleMealDelete}
       />
     </StyledTemplate>
   );

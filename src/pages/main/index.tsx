@@ -87,6 +87,7 @@ const MainPage: FC = () => {
   const [searchResult, setSearchResult] = useState<ILocation[]>([]);
   const [selectedResult, setSelectedResult] = useState<ILocation | null>(null);
   const [isSearchable, setIsSearchable] = useState(true);
+  
   const [meals, setMeals] = useState<IMeal[]>([]);
   const [meal, setMeal] = useState<IMeal | null>(null);
   const [newMeal, setNewMeal] = useState<IMeal>({
@@ -101,11 +102,11 @@ const MainPage: FC = () => {
   });
   const [isMealAdded, setIsMealAdded] = useState(false);
 
-  const onLocationSelect = (option: string, index: number) => {
+  const handleLocationSelect = (option: string, index: number) => {
     setLocation(locations[index]);
   };
 
-  const handleSubmit = async (result: ILocation) => {
+  const handleLocationSubmit = async (result: ILocation) => {
     if (!user?.uid) return;
     await createUserLocation(user.uid, result);
     setSearchResult([]);
@@ -113,7 +114,7 @@ const MainPage: FC = () => {
     await getLocations(user.uid);
   }
 
-  const handleSearch = async (keyword: string) => {
+  const handleLocationSearch = async (keyword: string) => {
     if (!isSearchable) {
       setIsSearchable(true);
       return;
@@ -123,7 +124,7 @@ const MainPage: FC = () => {
       setSelectedResult(null);
       return;
     }
-    const data = await getLocationByKeyword({ keyword, size: 5 }).then((res) => res.data.documents); // debouce 처리 해야함
+    const data = await getLocationByKeyword({ keyword, size: 5 }).then((res) => res.data.documents);
     const result = data.map((el) => {
       return {
         name: el.place_name,
@@ -141,7 +142,7 @@ const MainPage: FC = () => {
     setIsSearchable(false);
   }
 
-  const handleDelete = async (location: ILocation) => {
+  const handleLocationDelete = async (location: ILocation) => {
     if (!user?.uid) return;
     const locationId = location?.id;
     if (!locationId) return;
@@ -174,14 +175,23 @@ const MainPage: FC = () => {
     setMeals(meals);
   }
 
-  const pickMeal = () => {
+  const handleMealPick = () => {
     const length = meals.length;
     if (length === 0) return;
     const index = Math.round(Math.random() * (length - 1));
     setMeal(meals[index]);
   }
 
-  const onMealCancel = () => {
+  const handleMealInput = (value: string | { food: string, price: string }[], key: 'name' | 'category' | 'address' | 'foods') => {
+    setNewMeal((prevNewMeal) => {
+      return {
+        ...prevNewMeal,
+        [key]: value,
+      }
+    });
+  }
+
+  const handleMealCancel = () => {
     setNewMeal({
       name: '',
       category: '',
@@ -194,7 +204,7 @@ const MainPage: FC = () => {
     });
   }
 
-  const onMealSubmit = () => {
+  const handleMealSubmit = () => {
     setIsMealAdded(true);
   }
 
@@ -217,15 +227,6 @@ const MainPage: FC = () => {
     if (!location?.id || !meal?.id) return;
     await deleteLocationMeal(location.id, meal.id);
     await getMeals();
-  }
-
-  const handleMealChange = (value: string | { food: string, price: string }[], key: 'name' | 'category' | 'address' | 'foods') => {
-    setNewMeal((prevNewMeal) => {
-      return {
-        ...prevNewMeal,
-        [key]: value,
-      }
-    });
   }
 
   useEffect(() => {
@@ -276,19 +277,19 @@ const MainPage: FC = () => {
         locationOptions={locations.map((location) => location.name)}
         userMenus={userMenus}
         handleLocationSelect={(option, index) =>
-          onLocationSelect(option, index)
+          handleLocationSelect(option, index)
         }
       />
       <StyledPicker
         meals={meals}
         meal={meal}
-        handlePickMeal={pickMeal}
-        handleAddMeal={() => openMealModal({ 
+        handleMealPick={handleMealPick}
+        handleMealAdd={() => openMealModal({ 
           id: 'meal',
-          onCancel: () => onMealCancel(),
-          onSubmit: () => onMealSubmit(),
+          onCancel: () => handleMealCancel(),
+          onSubmit: () => handleMealSubmit(),
         })}
-        handleDeleteMeal={deleteMeal}
+        handleMealDelete={deleteMeal}
       />
       <BaseModal
         id="location"
@@ -299,10 +300,10 @@ const MainPage: FC = () => {
               locations={locations}
               searchResult={searchResult}
               selectedResult={selectedResult}
-              handleSubmit={handleSubmit}
-              handleSearch={handleSearch}
+              handleSubmit={handleLocationSubmit}
+              handleSearch={handleLocationSearch}
               handleSearchSelect={handleSearchSelect}
-              handleDelete={handleDelete}
+              handleDelete={handleLocationDelete}
             />
           </ModalContent>
         }
@@ -316,9 +317,9 @@ const MainPage: FC = () => {
               meal={newMeal}
               searchResult={searchResult}
               selectedResult={selectedResult}
-              handleSearch={handleSearch}
+              handleSearch={handleLocationSearch}
               handleSearchSelect={handleSearchSelect}
-              handleMealChange={handleMealChange}
+              handleMealInput={handleMealInput}
             />
           </ModalContent>
         }
