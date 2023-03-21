@@ -174,6 +174,13 @@ const MainPage: FC = () => {
     setMeals(meals);
   }
 
+  const pickMeal = () => {
+    const length = meals.length;
+    if (length === 0) return;
+    const index = Math.round(Math.random() * (length - 1));
+    setMeal(meals[index]);
+  }
+
   const onMealCancel = () => {
     setNewMeal({
       name: '',
@@ -250,13 +257,6 @@ const MainPage: FC = () => {
   }, [location]);
 
   useEffect(() => {
-    const length = meals.length;
-    if (length === 0) return;
-    const index = Math.round(Math.random() * (length - 1));
-    setMeal(meals[index]);
-  }, [meals]);
-
-  useEffect(() => {
     if (!isMealAdded) return;
     const fetchData = async () => {
       if (!location?.id) return;
@@ -282,12 +282,13 @@ const MainPage: FC = () => {
       <StyledPicker
         meals={meals}
         meal={meal}
-        handleAdd={() => openMealModal({ 
+        handlePickMeal={pickMeal}
+        handleAddMeal={() => openMealModal({ 
           id: 'meal',
           onCancel: () => onMealCancel(),
           onSubmit: () => onMealSubmit(),
         })}
-        handleDelete={deleteMeal}
+        handleDeleteMeal={deleteMeal}
       />
       <BaseModal
         id="location"

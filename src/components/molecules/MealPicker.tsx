@@ -125,14 +125,22 @@ interface IMealPicked {
   text: string;
 }
 
-const MealPicker: FC<{ meal: string | null }> = ({ meal, ...props }) => {
+interface IMealPicker {
+  meal: string | null;
+  handlePick: () => any;
+}
+
+const MealPicker: FC<IMealPicker> = ({ meal, handlePick, ...props }) => {
   const [mealIndex, setMealIndex] = useState(0);
   const [isPicked, setIsPicked] = useState(false);
   const [meals, setMeals] = useState<(IMealPlaceholder | IMealPicked)[]>([]);
 
-  const handlePick = () => {
-    setMealIndex(meals.length - 1);
-    setTimeout(() => setIsPicked(true), 2000);
+  const createMealsList = () => {
+    
+  }
+
+  const handleRandom = () => {
+    handlePick();
   };
 
   const handleReset = () => {
@@ -156,6 +164,10 @@ const MealPicker: FC<{ meal: string | null }> = ({ meal, ...props }) => {
       } as IMealPicked);
     }
     setMeals(meals);
+
+    if (!meal) return;
+    setMealIndex(meals.length - 1);
+    setTimeout(() => setIsPicked(true), 2000);
   }, [meal]);
 
   return (
@@ -190,7 +202,7 @@ const MealPicker: FC<{ meal: string | null }> = ({ meal, ...props }) => {
           action="pick meal"
           width={4}
           shape="square"
-          onClick={handlePick}
+          onClick={handleRandom}
         />
       )}
     </StyledPicker>
