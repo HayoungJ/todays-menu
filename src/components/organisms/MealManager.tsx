@@ -174,7 +174,7 @@ const RestaurantCard = styled.li`
 `;
 
 const CardButtons = styled.div`
-  margin-left: auto;
+  margin: auto 0 0 auto;
 
   button {
     margin-left: 1rem;
