@@ -72,9 +72,12 @@ const ManagerContainer = styled.section`
 const RestaurantsWrap = styled.ul`
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+
+  height: 100vh;
 
   padding: 3rem 4rem 1rem 2rem;
+
+  overflow: auto;
 `;
 
 const RestaurantAddButton = styled(BaseButton)`
@@ -92,13 +95,17 @@ const RestaurantCard = styled.li`
 
       width: 30%;
 
-      margin-bottom: 2rem;
+      margin: 0 5% 2rem 0;
       padding: 1rem 1.5rem;
 
       border: 1px solid ${palette.red};
       border-radius: 4px;
 
       background-color: ${palette.white};
+
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
 
       .title,
       .food,
