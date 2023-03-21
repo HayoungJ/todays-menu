@@ -179,9 +179,9 @@ const MealPicker: FC<IMealPicker> = ({ meal, handlePick, ...props }) => {
               {meal.type === 'text' && <span>{meal.text}</span>}
               {meal.type === 'image' && (
                 <>
-                  <Image src={meal.image} alt="" width={30} height={30} />
-                  <Image src={meal.image} alt="" width={30} height={30} />
-                  <Image src={meal.image} alt="" width={30} height={30} />
+                  <Image src={meal.image} priority alt="" width={30} height={30} />
+                  <Image src={meal.image} priority alt="" width={30} height={30} />
+                  <Image src={meal.image} priority alt="" width={30} height={30} />
                 </>
               )}
             </li>
